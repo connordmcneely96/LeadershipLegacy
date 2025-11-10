@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Dashboard - Connor Mcneely</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard-styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="theme-dark">
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Connor Mcneely</div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="coaching.html">Coaching</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="community.html">Community</a></li>
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Engineering & AI Dashboard</h1>
+                <p class="lead">Integrated CAD Workspace + AI/ML Operations Platform</p>
+            </div>
+        </section>
+
+        <!-- Dashboard Overview -->
+        <section class="dashboard-overview">
+            <div class="container">
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">Active Projects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🚀</div>
+                        <div class="stat-value">$1.2M</div>
+                        <div class="stat-label">Revenue Pipeline</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-value">8</div>
+                        <div class="stat-label">AI Models Running</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📐</div>
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">CAD Designs</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI/ML Services Section -->
+        <section class="services-section">
+            <div class="container">
+                <h2 class="section-title">AI/ML Services</h2>
+                <div class="services-dashboard-grid">
+                    <!-- RAG System Builder -->
+                    <div class="dashboard-service-card">
+                        <div class="service-header-dash">
+                            <div class="service-icon-dash">🧠</div>
+                            <h3>RAG System Builder</h3>
+                            <span class="service-status active">Active</span>
+                        </div>
+                        <p class="service-description">Intelligent document processing and retrieval</p>
+                        <div class="service-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Projects</span>
+                                <span class="metric-value">3</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Revenue</span>
+                                <span class="metric-value">$105K</span>
+                            </div>
+                        </div>
+                        <div class="service-features-list">
+                            <span class="feature-tag">Document Upload</span>
+                            <span class="feature-tag">Vector Embedding</span>
+                            <span class="feature-tag">API Generation</span>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="openRAGBuilder()">Open Builder</button>
+                    </div>
+
+                    <!-- ML Model Studio -->
+                    <div class="dashboard-service-card">
+                        <div class="service-header-dash">
+                            <div class="service-icon-dash">🤖</div>
+                            <h3>ML Model Studio</h3>
+                            <span class="service-status active">Active</span>
+                        </div>
+                        <p class="service-description">Custom machine learning model training</p>
+                        <div class="service-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Projects</span>
+                                <span class="metric-value">2</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Revenue</span>
+                                <span class="metric-value">$240K</span>
+                            </div>
+                        </div>
+                        <div class="service-features-list">
+                            <span class="feature-tag">Dataset Training</span>
+                            <span class="feature-tag">Hyperparameter Tuning</span>
+                            <span class="feature-tag">Model Export</span>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="openMLStudio()">Open Studio</button>
+                    </div>
+
+                    <!-- Computer Vision Lab -->
+                    <div class="dashboard-service-card">
+                        <div class="service-header-dash">
+                            <div class="service-icon-dash">👁️</div>
+                            <h3>Computer Vision Lab</h3>
+                            <span class="service-status active">Active</span>
+                        </div>
+                        <p class="service-description">Advanced image and video analysis</p>
+                        <div class="service-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Projects</span>
+                                <span class="metric-value">1</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Revenue</span>
+                                <span class="metric-value">$180K</span>
+                            </div>
+                        </div>
+                        <div class="service-features-list">
+                            <span class="feature-tag">Object Detection</span>
+                            <span class="feature-tag">Quality Control</span>
+                            <span class="feature-tag">Real-time Analysis</span>
+                        </div>
+                        <button class="btn btn-primary btn-sm" onclick="openVisionLab()">Open Lab</button>
+                    </div>
+
+                    <!-- NLP Analytics -->
+                    <div class="dashboard-service-card">
+                        <div class="service-header-dash">
+                            <div class="service-icon-dash">💬</div>
+                            <h3>NLP Analytics Suite</h3>
+                            <span class="service-status pending">Planning</span>
+                        </div>
+                        <p class="service-description">Natural language processing and analytics</p>
+                        <div class="service-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Projects</span>
+                                <span class="metric-value">0</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Revenue</span>
+                                <span class="metric-value">$0K</span>
+                            </div>
+                        </div>
+                        <div class="service-features-list">
+                            <span class="feature-tag">Sentiment Analysis</span>
+                            <span class="feature-tag">Text Classification</span>
+                            <span class="feature-tag">Entity Recognition</span>
+                        </div>
+                        <button class="btn btn-outline btn-sm" onclick="openNLPSuite()">Configure</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CAD Workspace Section -->
+        <section class="cad-workspace-section">
+            <div class="container">
+                <div class="section-header-with-controls">
+                    <h2 class="section-title">CAD Engineering Workspace</h2>
+                    <div class="workspace-controls">
+                        <button class="btn btn-secondary btn-sm" onclick="newCADProject()">+ New Project</button>
+                        <button class="btn btn-outline btn-sm" onclick="importCADFile()">Import</button>
+                    </div>
+                </div>
+
+                <!-- 3D Viewer -->
+                <div class="cad-viewer-container">
+                    <div class="viewer-toolbar">
+                        <div class="tool-group">
+                            <button class="tool-btn" onclick="viewTool('rotate')" title="Rotate">🔄</button>
+                            <button class="tool-btn" onclick="viewTool('pan')" title="Pan">✋</button>
+                            <button class="tool-btn" onclick="viewTool('zoom')" title="Zoom">🔍</button>
+                        </div>
+                        <div class="tool-group">
+                            <button class="tool-btn" onclick="viewMode('wireframe')" title="Wireframe">📐</button>
+                            <button class="tool-btn" onclick="viewMode('solid')" title="Solid">🔲</button>
+                            <button class="tool-btn" onclick="viewMode('xray')" title="X-Ray">👻</button>
+                        </div>
+                        <div class="tool-group">
+                            <button class="tool-btn" onclick="measureTool()" title="Measure">📏</button>
+                            <button class="tool-btn" onclick="annotationTool()" title="Annotate">✏️</button>
+                            <button class="tool-btn" onclick="sectionTool()" title="Section">✂️</button>
+                        </div>
+                    </div>
+                    <div id="cad-viewer" class="cad-3d-viewer">
+                        <div class="viewer-placeholder">
+                            <div class="placeholder-icon">📐</div>
+                            <h3>3D CAD Viewer</h3>
+                            <p>Load a CAD model to begin</p>
+                            <button class="btn btn-primary" onclick="loadSampleModel()">Load Sample Model</button>
+                        </div>
+                    </div>
+                    <div class="viewer-info">
+                        <span id="viewer-status">Ready</span>
+                        <span id="model-info">No model loaded</span>
+                    </div>
+                </div>
+
+                <!-- Engineering Tools -->
+                <div class="engineering-tools-grid">
+                    <!-- Parametric Modeling -->
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <span class="tool-icon">⚙️</span>
+                            <h3>Parametric Editor</h3>
+                        </div>
+                        <p>Feature-based modeling with constraints</p>
+                        <ul class="tool-features">
+                            <li>Constraint system</li>
+                            <li>Formula-driven dimensions</li>
+                            <li>Real-time updates</li>
+                        </ul>
+                        <button class="btn btn-outline btn-sm" onclick="openParametricEditor()">Open Editor</button>
+                    </div>
+
+                    <!-- AI Design Assistant -->
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <span class="tool-icon">🤖</span>
+                            <h3>AI Design Assistant</h3>
+                        </div>
+                        <p>Natural language design commands</p>
+                        <ul class="tool-features">
+                            <li>Voice commands</li>
+                            <li>Generative design</li>
+                            <li>Design optimization</li>
+                        </ul>
+                        <button class="btn btn-outline btn-sm" onclick="openAIAssistant()">Activate AI</button>
+                    </div>
+
+                    <!-- Manufacturing Integration -->
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <span class="tool-icon">🏭</span>
+                            <h3>Manufacturing Tools</h3>
+                        </div>
+                        <p>CAM toolpath and BOM generation</p>
+                        <ul class="tool-features">
+                            <li>CAM toolpaths</li>
+                            <li>BOM auto-generation</li>
+                            <li>Quality control</li>
+                        </ul>
+                        <button class="btn btn-outline btn-sm" onclick="openManufacturing()">Open Tools</button>
+                    </div>
+
+                    <!-- Accessibility Checker -->
+                    <div class="tool-card">
+                        <div class="tool-header">
+                            <span class="tool-icon">♿</span>
+                            <h3>Accessibility Checker</h3>
+                        </div>
+                        <p>WCAG 2.1 AA compliance verification</p>
+                        <ul class="tool-features">
+                            <li>ADA compliance</li>
+                            <li>Universal design</li>
+                            <li>Section 508</li>
+                        </ul>
+                        <button class="btn btn-outline btn-sm" onclick="runAccessibilityCheck()">Run Check</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3D Plan Deliverables -->
+        <section class="deliverables-section">
+            <div class="container">
+                <h2 class="section-title">3D Plan Deliverables</h2>
+                <div class="deliverables-grid">
+                    <!-- Product Catalogs -->
+                    <div class="deliverable-card">
+                        <div class="deliverable-icon">📚</div>
+                        <h3>3D Product Catalogs</h3>
+                        <p class="deliverable-price">$25K - $45K</p>
+                        <p>Interactive web-based product viewers</p>
+                        <ul class="deliverable-includes">
+                            <li>360° product views</li>
+                            <li>Interactive hotspots</li>
+                            <li>AR preview capability</li>
+                            <li>Mobile responsive</li>
+                        </ul>
+                        <div class="deliverable-timeline">
+                            <span class="timeline-icon">⏱️</span>
+                            <span>4-6 weeks</span>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="requestQuote('catalog')">Request Quote</button>
+                    </div>
+
+                    <!-- Parametric Systems -->
+                    <div class="deliverable-card featured">
+                        <div class="featured-badge">Most Popular</div>
+                        <div class="deliverable-icon">⚡</div>
+                        <h3>Parametric Design System</h3>
+                        <p class="deliverable-price">$40K - $80K</p>
+                        <p>Custom parametric CAD platform</p>
+                        <ul class="deliverable-includes">
+                            <li>Feature-based modeling</li>
+                            <li>Constraint solver</li>
+                            <li>Design automation</li>
+                            <li>API integration</li>
+                            <li>Team collaboration</li>
+                        </ul>
+                        <div class="deliverable-timeline">
+                            <span class="timeline-icon">⏱️</span>
+                            <span>8-12 weeks</span>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="requestQuote('parametric')">Request Quote</button>
+                    </div>
+
+                    <!-- Engineering Visualization -->
+                    <div class="deliverable-card">
+                        <div class="deliverable-icon">🎨</div>
+                        <h3>Engineering Visualization</h3>
+                        <p class="deliverable-price">$30K - $60K</p>
+                        <p>Advanced rendering and simulation</p>
+                        <ul class="deliverable-includes">
+                            <li>Photorealistic rendering</li>
+                            <li>Animation sequences</li>
+                            <li>Assembly simulations</li>
+                            <li>Technical illustrations</li>
+                        </ul>
+                        <div class="deliverable-timeline">
+                            <span class="timeline-icon">⏱️</span>
+                            <span>6-10 weeks</span>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="requestQuote('visualization')">Request Quote</button>
+                    </div>
+
+                    <!-- Full CAD Platform -->
+                    <div class="deliverable-card">
+                        <div class="deliverable-icon">🏢</div>
+                        <h3>Enterprise CAD Platform</h3>
+                        <p class="deliverable-price">$100K - $200K</p>
+                        <p>Complete browser-based CAD solution</p>
+                        <ul class="deliverable-includes">
+                            <li>Full 3D modeling suite</li>
+                            <li>Multi-user collaboration</li>
+                            <li>Version control</li>
+                            <li>Manufacturing integration</li>
+                            <li>Custom plugins</li>
+                            <li>Accessibility features</li>
+                        </ul>
+                        <div class="deliverable-timeline">
+                            <span class="timeline-icon">⏱️</span>
+                            <span>16-24 weeks</span>
+                        </div>
+                        <button class="btn btn-primary btn-full" onclick="requestQuote('platform')">Request Quote</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Project Observatory -->
+        <section class="observatory-section">
+            <div class="container">
+                <h2 class="section-title">Project Observatory</h2>
+                <div class="observatory-grid">
+                    <!-- Active Projects -->
+                    <div class="observatory-card">
+                        <h3>Active Projects</h3>
+                        <div class="project-list">
+                            <div class="project-item">
+                                <div class="project-info">
+                                    <span class="project-name">Healthcare RAG System</span>
+                                    <span class="project-client">MedTech Corp</span>
+                                </div>
+                                <div class="project-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%"></div>
+                                    </div>
+                                    <span class="progress-label">75%</span>
+                                </div>
+                                <span class="project-value">$35K</span>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-info">
+                                    <span class="project-name">ML Predictive Analytics</span>
+                                    <span class="project-client">FinanceAI Inc</span>
+                                </div>
+                                <div class="project-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 45%"></div>
+                                    </div>
+                                    <span class="progress-label">45%</span>
+                                </div>
+                                <span class="project-value">$120K</span>
+                            </div>
+                            <div class="project-item">
+                                <div class="project-info">
+                                    <span class="project-name">3D Product Catalog</span>
+                                    <span class="project-client">RetailPro</span>
+                                </div>
+                                <div class="project-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 90%"></div>
+                                    </div>
+                                    <span class="progress-label">90%</span>
+                                </div>
+                                <span class="project-value">$35K</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Metrics -->
+                    <div class="observatory-card">
+                        <h3>Performance Metrics</h3>
+                        <div class="metrics-list">
+                            <div class="metric-row">
+                                <span class="metric-name">Model Accuracy</span>
+                                <span class="metric-badge success">96.5%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-name">API Uptime</span>
+                                <span class="metric-badge success">99.9%</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-name">Response Time</span>
+                                <span class="metric-badge success">145ms</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-name">Client Satisfaction</span>
+                                <span class="metric-badge success">4.9/5.0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Revenue Tracking -->
+                    <div class="observatory-card">
+                        <h3>Revenue Tracking</h3>
+                        <div class="revenue-chart">
+                            <div class="revenue-item">
+                                <span class="revenue-label">Q1 2025</span>
+                                <div class="revenue-bar">
+                                    <div class="revenue-fill" style="width: 85%"></div>
+                                </div>
+                                <span class="revenue-amount">$250K</span>
+                            </div>
+                            <div class="revenue-item">
+                                <span class="revenue-label">Q2 Target</span>
+                                <div class="revenue-bar">
+                                    <div class="revenue-fill projected" style="width: 60%"></div>
+                                </div>
+                                <span class="revenue-amount">$400K</span>
+                            </div>
+                            <div class="revenue-item">
+                                <span class="revenue-label">Year 1 Goal</span>
+                                <div class="revenue-bar">
+                                    <div class="revenue-fill goal" style="width: 30%"></div>
+                                </div>
+                                <span class="revenue-amount">$1M</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="container">
+                <h2>Ready to Transform Your Business?</h2>
+                <p>Let's discuss how our AI/ML and CAD engineering services can accelerate your growth</p>
+                <div class="cta-buttons">
+                    <a href="contact.html" class="btn btn-primary">Schedule Consultation</a>
+                    <a href="portfolio.html" class="btn btn-secondary">View Case Studies</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Connor Mcneely</h4>
+                    <p>Leadership & Legacy</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="coaching.html">Coaching</a></li>
+                        <li><a href="dashboard.html">Engineering</a></li>
+                        <li><a href="community.html">Community</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="portfolio.html">Portfolio</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Connor Mcneely. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>
