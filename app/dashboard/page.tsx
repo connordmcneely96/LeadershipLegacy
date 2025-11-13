@@ -8,6 +8,8 @@ export default function Dashboard() {
   const [threeLoaded, setThreeLoaded] = useState(false);
   const [viewerInitialized, setViewerInitialized] = useState(false);
   const sceneRef = useRef<any>(null);
+  const animationFrameRef = useRef<number | null>(null);
+  const modelAnimationFrameRef = useRef<number | null>(null);
 
   // Three.js initialization function
   const initThreeJS = useCallback(() => {
@@ -51,7 +53,7 @@ export default function Dashboard() {
 
       // Animation loop
       const animate = () => {
-        requestAnimationFrame(animate);
+        animationFrameRef.current = requestAnimationFrame(animate);
         renderer.render(scene, camera);
       };
       animate();
@@ -69,6 +71,39 @@ export default function Dashboard() {
       initThreeJS();
       setViewerInitialized(true);
     }
+
+    // Cleanup function
+    return () => {
+      // Cancel animation frame
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+      if (modelAnimationFrameRef.current) {
+        cancelAnimationFrame(modelAnimationFrameRef.current);
+      }
+
+      // Dispose Three.js resources
+      if (sceneRef.current) {
+        const { scene, renderer } = sceneRef.current;
+        if (renderer) {
+          renderer.dispose();
+        }
+        if (scene) {
+          scene.traverse((object: any) => {
+            if (object.geometry) {
+              object.geometry.dispose();
+            }
+            if (object.material) {
+              if (Array.isArray(object.material)) {
+                object.material.forEach((material: any) => material.dispose());
+              } else {
+                object.material.dispose();
+              }
+            }
+          });
+        }
+      }
+    };
   }, [threeLoaded, viewerInitialized, initThreeJS]);
 
   const loadSampleModel = () => {
@@ -79,7 +114,12 @@ export default function Dashboard() {
 
     try {
       const THREE = (window as any).THREE;
-      const { scene } = sceneRef.current;
+      const { scene, renderer, camera } = sceneRef.current;
+
+      // Cancel existing model animation if any
+      if (modelAnimationFrameRef.current) {
+        cancelAnimationFrame(modelAnimationFrameRef.current);
+      }
 
       // Create sample model
       const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
@@ -93,9 +133,10 @@ export default function Dashboard() {
 
       // Animate rotation
       const animate = () => {
-        requestAnimationFrame(animate);
+        modelAnimationFrameRef.current = requestAnimationFrame(animate);
         model.rotation.x += 0.005;
         model.rotation.y += 0.01;
+        renderer.render(scene, camera);
       };
       animate();
 
