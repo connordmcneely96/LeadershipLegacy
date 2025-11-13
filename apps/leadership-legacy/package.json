@@ -1,0 +1,8 @@
+{
+  "name": "leadership-legacy-static",
+  "version": "1.0.0",
+  "description": "Connor Mcneely Leadership & Legacy - Static Website",
+  "scripts": {
+    "start": "echo 'Static site - no build needed'"
+  }
+}
