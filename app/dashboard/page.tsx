@@ -71,10 +71,12 @@ export default function Dashboard() {
       initThreeJS();
       setViewerInitialized(true);
     }
+  }, [threeLoaded, viewerInitialized, initThreeJS]);
 
-    // Cleanup function
+  // Cleanup on unmount only
+  useEffect(() => {
     return () => {
-      // Cancel animation frame
+      // Cancel animation frames
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -104,7 +106,7 @@ export default function Dashboard() {
         }
       }
     };
-  }, [threeLoaded, viewerInitialized, initThreeJS]);
+  }, []); // Empty deps = cleanup runs only on unmount
 
   const loadSampleModel = () => {
     if (!(window as any).THREE || !sceneRef.current) {
