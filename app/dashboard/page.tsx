@@ -18,13 +18,16 @@ export default function Dashboard() {
     const THREE = (window as any).THREE;
     const container = viewerRef.current;
 
+    // Don't initialize if already initialized
+    if (container.querySelector('canvas')) return;
+
     try {
       // Create scene
       const scene = new THREE.Scene();
       scene.background = new THREE.Color(0x0f3460);
 
       // Create camera
-      const width = container.clientWidth;
+      const width = container.clientWidth || 800;
       const height = 500;
       const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
       camera.position.z = 5;
@@ -32,7 +35,8 @@ export default function Dashboard() {
       // Create renderer
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(width, height);
-      container.innerHTML = '';
+
+      // Append renderer to empty container
       container.appendChild(renderer.domElement);
 
       // Add lights
@@ -295,18 +299,24 @@ export default function Dashboard() {
               </div>
 
               {/* 3D Viewer */}
-              <div ref={viewerRef} className="w-full h-[500px] bg-gradient-to-br from-blue-900 to-indigo-900 flex items-center justify-center">
+              <div className="w-full h-[500px] bg-gradient-to-br from-blue-900 to-indigo-900 relative">
+                {/* Three.js Canvas Container */}
+                <div ref={viewerRef} className="w-full h-full absolute top-0 left-0"></div>
+
+                {/* Loading Overlay */}
                 {!viewerInitialized && (
-                  <div className="text-center p-4">
-                    <div className="text-6xl mb-4">📐</div>
-                    <h3 className="text-2xl font-bold mb-2">3D CAD Viewer</h3>
-                    <p className="text-gray-300 mb-4">Load a CAD model to begin</p>
-                    <button
-                      onClick={loadSampleModel}
-                      className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold"
-                    >
-                      Load Sample Model
-                    </button>
+                  <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-900">
+                    <div className="text-center p-4">
+                      <div className="text-6xl mb-4">📐</div>
+                      <h3 className="text-2xl font-bold mb-2">3D CAD Viewer</h3>
+                      <p className="text-gray-300 mb-4">Load a CAD model to begin</p>
+                      <button
+                        onClick={loadSampleModel}
+                        className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold"
+                      >
+                        Load Sample Model
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
