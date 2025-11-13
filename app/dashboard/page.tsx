@@ -1,7 +1,24 @@
 'use client';
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import Script from 'next/script';
+import {
+  Brain,
+  Database,
+  Eye,
+  MessageSquare,
+  Activity,
+  TrendingUp,
+  Zap,
+  Users,
+  ArrowUpRight,
+  Sparkles,
+  Box,
+  Grid3x3,
+  RotateCw,
+  ZoomIn,
+} from 'lucide-react';
 
 export default function Dashboard() {
   const viewerRef = useRef<HTMLDivElement>(null);
@@ -11,65 +28,53 @@ export default function Dashboard() {
   const animationFrameRef = useRef<number | null>(null);
   const modelAnimationFrameRef = useRef<number | null>(null);
 
-  // Three.js initialization function
+  // Three.js initialization
   const initThreeJS = useCallback(() => {
     if (typeof window === 'undefined' || !(window as any).THREE || !viewerRef.current) return;
 
     const THREE = (window as any).THREE;
     const container = viewerRef.current;
 
-    // Don't initialize if already initialized
     if (container.querySelector('canvas')) return;
 
     try {
-      // Create scene
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color(0x0f3460);
+      scene.background = new THREE.Color(0x1E2538);
 
-      // Create camera
       const width = container.clientWidth || 800;
       const height = 500;
       const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
       camera.position.z = 5;
 
-      // Create renderer
       const renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(width, height);
-
-      // Append renderer to empty container
       container.appendChild(renderer.domElement);
 
-      // Add lights
       const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
       scene.add(ambientLight);
 
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      const directionalLight = new THREE.DirectionalLight(0x00B8E6, 0.8);
       directionalLight.position.set(5, 5, 5);
       scene.add(directionalLight);
 
-      // Add grid
-      const gridHelper = new THREE.GridHelper(10, 10, 0x3498db, 0x2c3e50);
+      const gridHelper = new THREE.GridHelper(10, 10, 0x00B8E6, 0x2D3548);
       scene.add(gridHelper);
 
-      // Add axes
       const axesHelper = new THREE.AxesHelper(5);
       scene.add(axesHelper);
 
-      // Animation loop
       const animate = () => {
         animationFrameRef.current = requestAnimationFrame(animate);
         renderer.render(scene, camera);
       };
       animate();
 
-      // Store in ref for access from buttons
       sceneRef.current = { scene, camera, renderer };
     } catch (error) {
       console.error('Error initializing Three.js:', error);
     }
   }, []);
 
-  // Initialize Three.js when loaded
   useEffect(() => {
     if (threeLoaded && !viewerInitialized) {
       initThreeJS();
@@ -77,28 +82,20 @@ export default function Dashboard() {
     }
   }, [threeLoaded, viewerInitialized, initThreeJS]);
 
-  // Cleanup on unmount only
   useEffect(() => {
     return () => {
-      // Cancel animation frames
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
       if (modelAnimationFrameRef.current) {
         cancelAnimationFrame(modelAnimationFrameRef.current);
       }
-
-      // Dispose Three.js resources
       if (sceneRef.current) {
         const { scene, renderer } = sceneRef.current;
-        if (renderer) {
-          renderer.dispose();
-        }
+        if (renderer) renderer.dispose();
         if (scene) {
           scene.traverse((object: any) => {
-            if (object.geometry) {
-              object.geometry.dispose();
-            }
+            if (object.geometry) object.geometry.dispose();
             if (object.material) {
               if (Array.isArray(object.material)) {
                 object.material.forEach((material: any) => material.dispose());
@@ -110,34 +107,28 @@ export default function Dashboard() {
         }
       }
     };
-  }, []); // Empty deps = cleanup runs only on unmount
+  }, []);
 
   const loadSampleModel = () => {
-    if (!(window as any).THREE || !sceneRef.current) {
-      showNotification('3D viewer not ready yet', 'error');
-      return;
-    }
+    if (!(window as any).THREE || !sceneRef.current) return;
 
     try {
       const THREE = (window as any).THREE;
       const { scene, renderer, camera } = sceneRef.current;
 
-      // Cancel existing model animation if any
       if (modelAnimationFrameRef.current) {
         cancelAnimationFrame(modelAnimationFrameRef.current);
       }
 
-      // Create sample model
       const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
       const material = new THREE.MeshStandardMaterial({
-        color: 0x3498db,
-        metalness: 0.5,
-        roughness: 0.5
+        color: 0x00B8E6,
+        metalness: 0.7,
+        roughness: 0.3,
       });
       const model = new THREE.Mesh(geometry, material);
       scene.add(model);
 
-      // Animate rotation
       const animate = () => {
         modelAnimationFrameRef.current = requestAnimationFrame(animate);
         model.rotation.x += 0.005;
@@ -145,350 +136,398 @@ export default function Dashboard() {
         renderer.render(scene, camera);
       };
       animate();
-
-      showNotification('Sample model loaded successfully!', 'success');
     } catch (error) {
       console.error('Error loading model:', error);
-      showNotification('Error loading model', 'error');
     }
   };
 
-  const showNotification = (message: string, type: 'info' | 'success' | 'error' = 'info') => {
-    if (typeof window === 'undefined') return;
+  const metrics = [
+    {
+      label: 'Active Projects',
+      value: '12',
+      change: '+3 this week',
+      icon: TrendingUp,
+      sparkline: [40, 45, 42, 48, 50, 49, 52],
+    },
+    {
+      label: 'API Calls',
+      value: '45.2K',
+      change: '+12% vs last week',
+      icon: Zap,
+      sparkline: [30, 35, 32, 38, 42, 45, 45.2],
+    },
+    {
+      label: 'Models Deployed',
+      value: '8',
+      change: '+2 this month',
+      icon: Brain,
+      sparkline: [4, 5, 5, 6, 7, 7, 8],
+    },
+    {
+      label: 'Active Users',
+      value: '156',
+      change: '+8% growth',
+      icon: Users,
+      sparkline: [120, 130, 135, 140, 145, 150, 156],
+    },
+  ];
 
-    const colors = {
-      info: '#3498db',
-      success: '#2ecc71',
-      error: '#e74c3c'
-    };
-
-    const notification = document.createElement('div');
-    notification.style.cssText = `
-      position: fixed;
-      top: 100px;
-      right: 20px;
-      background: ${colors[type]};
-      color: white;
-      padding: 1rem 1.5rem;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-      z-index: 9999;
-      animation: slideIn 0.3s ease-out;
-    `;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-      notification.style.animation = 'slideOut 0.3s ease-out';
-      setTimeout(() => notification.remove(), 300);
-    }, 4000);
-  };
+  const aiFeatures = [
+    {
+      title: 'RAG Builder',
+      description: 'Advanced document processing and retrieval',
+      icon: Database,
+      status: 'active',
+      gradient: 'from-brand-cyan to-brand-cyan-dark',
+    },
+    {
+      title: 'ML Studio',
+      description: 'Train custom machine learning models',
+      icon: Brain,
+      status: 'beta',
+      gradient: 'from-brand-blue-electric to-brand-cyan',
+    },
+    {
+      title: 'Vision Lab',
+      description: 'Computer vision and object detection',
+      icon: Eye,
+      status: 'coming-soon',
+      gradient: 'from-success to-brand-cyan',
+    },
+    {
+      title: 'NLP Analytics',
+      description: 'Natural language processing suite',
+      icon: MessageSquare,
+      status: 'coming-soon',
+      gradient: 'from-warning to-brand-blue-electric',
+    },
+  ];
 
   return (
-    <>
+    <div className="min-h-screen bg-neural-dark">
       <Script
         src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
         onLoad={() => setThreeLoaded(true)}
         strategy="afterInteractive"
       />
 
-      <div className="min-h-screen bg-[#1a1a2e] text-[#eaeaea]">
-        <style jsx global>{`
-          @keyframes slideIn {
-            from { transform: translateX(400px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-          }
-          @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(400px); opacity: 0; }
-          }
-        `}</style>
-
-        {/* Hero Section */}
-        <div className="pt-24 pb-12 bg-gradient-to-r from-purple-600 to-indigo-700">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold mb-4">Engineering & AI Dashboard</h1>
-            <p className="text-xl opacity-90">Integrated CAD Workspace + AI/ML Operations Platform</p>
-          </div>
+      {/* Hero Section */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className="relative overflow-hidden bg-gradient-to-br from-neural-dark via-neural-slate to-neural-dark pt-20 pb-16"
+      >
+        {/* Animated Background Grid */}
+        <div className="absolute inset-0 opacity-20">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `linear-gradient(to right, #00B8E6 1px, transparent 1px),
+                              linear-gradient(to bottom, #00B8E6 1px, transparent 1px)`,
+              backgroundSize: '50px 50px',
+            }}
+          />
         </div>
 
-        {/* Dashboard Stats */}
-        <div className="max-w-7xl mx-auto px-4 py-8 -mt-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            {[
-              { icon: '🎯', value: '12', label: 'Active Projects' },
-              { icon: '🚀', value: '$1.2M', label: 'Revenue Pipeline' },
-              { icon: '⚡', value: '8', label: 'AI Models Running' },
-              { icon: '📐', value: '24', label: 'CAD Designs' }
-            ].map((stat, i) => (
-              <div key={i} className="bg-[#16213e] p-6 rounded-lg text-center transform hover:-translate-y-1 transition border border-[#0f3460]">
-                <div className="text-4xl mb-2">{stat.icon}</div>
-                <div className="text-3xl font-bold text-blue-400">{stat.value}</div>
-                <div className="text-gray-400">{stat.label}</div>
+        {/* Glowing Orbs */}
+        <div className="absolute top-10 -left-40 w-80 h-80 bg-brand-cyan opacity-20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-10 -right-40 w-80 h-80 bg-brand-blue-electric opacity-20 rounded-full blur-3xl animate-pulse" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-center"
+          >
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-cyan/10 border border-brand-cyan/20 mb-6"
+            >
+              <Sparkles className="w-4 h-4 text-brand-cyan" />
+              <span className="text-sm font-medium text-brand-cyan">
+                Integrated AI/ML + CAD Engineering Platform
+              </span>
+            </motion.div>
+
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+              Engineering & AI Dashboard
+            </h1>
+            <p className="text-xl md:text-2xl text-circuit-silver max-w-3xl mx-auto">
+              Build, deploy, and monitor intelligent systems with world-class CAD workspace
+            </p>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-10 pb-20">
+        {/* Metrics Grid */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-12"
+        >
+          {metrics.map((metric, index) => (
+            <motion.div
+              key={metric.label}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 * index }}
+              whileHover={{ y: -8, scale: 1.02 }}
+              className="group relative bg-neural-slate/60 backdrop-blur-xl border border-circuit-silver/20 rounded-2xl p-6 hover:border-brand-cyan/50 hover:shadow-glow-cyan transition-all duration-300"
+            >
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-cyan/0 to-brand-cyan/0 group-hover:from-brand-cyan/10 group-hover:to-transparent transition-all duration-300" />
+
+              <div className="relative">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <p className="text-circuit-silver text-sm font-medium mb-1">
+                      {metric.label}
+                    </p>
+                    <h3 className="text-4xl font-bold text-white">{metric.value}</h3>
+                  </div>
+                  <div className="w-12 h-12 rounded-xl bg-brand-cyan/20 flex items-center justify-center group-hover:bg-brand-cyan/30 transition-colors">
+                    <metric.icon className="w-6 h-6 text-brand-cyan" />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="text-success text-sm font-semibold flex items-center gap-1">
+                    <TrendingUp className="w-4 h-4" />
+                    {metric.change}
+                  </span>
+                </div>
+
+                {/* Mini Sparkline */}
+                <div className="mt-4 flex items-end gap-1 h-8">
+                  {metric.sparkline.map((value, i) => (
+                    <div
+                      key={i}
+                      className="flex-1 bg-brand-cyan/30 rounded-t group-hover:bg-brand-cyan/50 transition-colors"
+                      style={{
+                        height: `${(value / Math.max(...metric.sparkline)) * 100}%`,
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
-            ))}
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* AI Capabilities */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mb-12"
+        >
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-3xl font-bold text-white mb-2">AI/ML Services</h2>
+              <p className="text-circuit-silver">
+                Powerful tools to build and deploy intelligent systems
+              </p>
+            </div>
           </div>
 
-          {/* AI/ML Services */}
-          <section className="mb-12 bg-[#16213e] p-8 rounded-lg">
-            <h2 className="text-3xl font-bold mb-6">AI/ML Services</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { icon: '🧠', title: 'RAG System Builder', status: 'Active', projects: 3, revenue: '$105K', desc: 'Intelligent document processing and retrieval', tags: ['Document Upload', 'Vector Embedding', 'API Generation'] },
-                { icon: '🤖', title: 'ML Model Studio', status: 'Active', projects: 2, revenue: '$240K', desc: 'Custom machine learning model training', tags: ['Dataset Training', 'Hyperparameter Tuning', 'Model Export'] },
-                { icon: '👁️', title: 'Computer Vision Lab', status: 'Active', projects: 1, revenue: '$180K', desc: 'Advanced image and video analysis', tags: ['Object Detection', 'Quality Control', 'Real-time Analysis'] },
-                { icon: '💬', title: 'NLP Analytics Suite', status: 'Planning', projects: 0, revenue: '$0K', desc: 'Natural language processing and analytics', tags: ['Sentiment Analysis', 'Text Classification', 'Entity Recognition'] }
-              ].map((service, i) => (
-                <div key={i} className="bg-[#1a1a2e] rounded-lg p-6 border-2 border-[#0f3460] hover:border-blue-500 transition">
-                  <div className="flex justify-between items-start mb-3">
-                    <span className="text-4xl">{service.icon}</span>
-                    <span className={`${service.status === 'Active' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400'} text-xs px-2 py-1 rounded-full`}>
-                      {service.status}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {aiFeatures.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 * index }}
+                whileHover={{ y: -8 }}
+                className="group relative h-full bg-neural-slate/60 backdrop-blur-xl border border-circuit-silver/20 rounded-2xl p-6 hover:border-brand-cyan/50 hover:shadow-glow-cyan transition-all duration-300 overflow-hidden cursor-pointer"
+              >
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}
+                />
+
+                <div className="relative">
+                  <div className="flex items-center justify-between mb-4">
+                    <div
+                      className={`p-3 rounded-xl bg-gradient-to-br ${feature.gradient} shadow-glow-cyan`}
+                    >
+                      <feature.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <span
+                      className={`px-2 py-1 text-xs font-bold rounded-full ${
+                        feature.status === 'active'
+                          ? 'bg-success/20 text-success border border-success/30'
+                          : feature.status === 'beta'
+                          ? 'bg-warning/20 text-warning border border-warning/30'
+                          : 'bg-circuit-silver/20 text-circuit-silver border border-circuit-silver/30'
+                      }`}
+                    >
+                      {feature.status === 'active'
+                        ? 'ACTIVE'
+                        : feature.status === 'beta'
+                        ? 'BETA'
+                        : 'SOON'}
                     </span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                  <p className="text-gray-400 text-sm mb-4">{service.desc}</p>
-                  <div className="flex justify-between text-sm mb-4 bg-[#0f3460] p-3 rounded">
-                    <div><div className="text-gray-400">Projects</div><div className="text-blue-400 font-bold">{service.projects}</div></div>
-                    <div><div className="text-gray-400">Revenue</div><div className="text-blue-400 font-bold">{service.revenue}</div></div>
-                  </div>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {service.tags.map((tag, j) => (
-                      <span key={j} className="bg-[#0f3460] text-xs px-2 py-1 rounded">{tag}</span>
-                    ))}
-                  </div>
-                  <button
-                    onClick={() => showNotification(`Opening ${service.title}...`, 'info')}
-                    className="w-full bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded font-semibold transition"
-                  >
-                    Open {service.status === 'Active' ? 'Builder' : 'Configure'}
-                  </button>
-                </div>
-              ))}
-            </div>
-          </section>
 
-          {/* CAD Workspace */}
-          <section className="mb-12">
-            <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
-              <h2 className="text-3xl font-bold">CAD Engineering Workspace</h2>
+                  <h3 className="text-xl font-bold text-white mb-2 group-hover:text-brand-cyan transition-colors">
+                    {feature.title}
+                  </h3>
+                  <p className="text-circuit-silver text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
+
+                  <div className="flex items-center gap-2 text-brand-cyan font-semibold group-hover:gap-3 transition-all mt-4">
+                    <span>Explore</span>
+                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* CAD Engineering Workspace */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mb-12"
+        >
+          <div className="flex items-center justify-between mb-6">
+            <div>
+              <h2 className="text-3xl font-bold text-white mb-2">
+                CAD Engineering Workspace
+              </h2>
+              <p className="text-circuit-silver">
+                Interactive 3D modeling and parametric design tools
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 rounded-xl bg-success/20 text-success border border-success/30 font-semibold hover:bg-success/30 transition-all"
+              >
+                + New Project
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="px-4 py-2 rounded-xl border border-circuit-silver/30 text-circuit-silver font-semibold hover:bg-circuit-silver/10 transition-all"
+              >
+                Import
+              </motion.button>
+            </div>
+          </div>
+
+          <div className="bg-neural-slate/60 backdrop-blur-xl border border-circuit-silver/20 rounded-2xl overflow-hidden">
+            {/* Viewer Toolbar */}
+            <div className="bg-neural-gray/50 p-4 flex gap-4 border-b border-circuit-silver/20">
               <div className="flex gap-2">
-                <button onClick={() => showNotification('Creating new project...', 'info')} className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded font-semibold">+ New Project</button>
-                <button onClick={() => showNotification('Import CAD File - Supported: STEP, STL, OBJ, IGES', 'info')} className="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded font-semibold border border-gray-600">Import</button>
+                <button className="w-10 h-10 rounded-lg hover:bg-brand-cyan/20 transition text-brand-cyan flex items-center justify-center">
+                  <RotateCw className="w-5 h-5" />
+                </button>
+                <button className="w-10 h-10 rounded-lg hover:bg-brand-cyan/20 transition text-brand-cyan flex items-center justify-center">
+                  <ZoomIn className="w-5 h-5" />
+                </button>
+                <button className="w-10 h-10 rounded-lg hover:bg-brand-cyan/20 transition text-brand-cyan flex items-center justify-center">
+                  <Grid3x3 className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="flex-1" />
+              <div className="flex items-center gap-2 text-sm text-circuit-silver">
+                <div className="w-2 h-2 bg-success rounded-full animate-pulse" />
+                <span>Viewer Ready</span>
               </div>
             </div>
 
-            <div className="bg-[#16213e] rounded-lg overflow-hidden border-2 border-[#0f3460]">
-              {/* Viewer Toolbar */}
-              <div className="bg-[#0f3460] p-3 flex gap-4 flex-wrap border-b border-[#0f3460]">
-                <div className="flex gap-2">
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="Rotate">🔄</button>
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="Pan">✋</button>
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="Zoom">🔍</button>
+            {/* 3D Viewer */}
+            <div className="w-full h-[500px] bg-gradient-to-br from-neural-slate to-neural-gray relative">
+              <div ref={viewerRef} className="w-full h-full absolute top-0 left-0" />
+
+              {!viewerInitialized && (
+                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                  <div className="text-center p-4">
+                    <Box className="w-16 h-16 mx-auto mb-4 text-brand-cyan animate-float" />
+                    <h3 className="text-2xl font-bold text-white mb-2">
+                      3D CAD Viewer
+                    </h3>
+                    <p className="text-circuit-silver mb-4">
+                      Load a model to begin
+                    </p>
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={loadSampleModel}
+                      className="px-6 py-3 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-blue-electric text-white font-semibold shadow-glow-cyan-lg"
+                    >
+                      Load Sample Model
+                    </motion.button>
+                  </div>
                 </div>
-                <div className="flex gap-2">
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="Wireframe">📐</button>
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="Solid">🔲</button>
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="X-Ray">👻</button>
-                </div>
-                <div className="flex gap-2">
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="Measure">📏</button>
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="Annotate">✏️</button>
-                  <button className="w-10 h-10 rounded hover:bg-blue-600 transition text-xl" title="Section">✂️</button>
-                </div>
-              </div>
-
-              {/* 3D Viewer */}
-              <div className="w-full h-[500px] bg-gradient-to-br from-blue-900 to-indigo-900 relative">
-                {/* Three.js Canvas Container */}
-                <div ref={viewerRef} className="w-full h-full absolute top-0 left-0"></div>
-
-                {/* Loading Overlay */}
-                {!viewerInitialized && (
-                  <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-900">
-                    <div className="text-center p-4">
-                      <div className="text-6xl mb-4">📐</div>
-                      <h3 className="text-2xl font-bold mb-2">3D CAD Viewer</h3>
-                      <p className="text-gray-300 mb-4">Load a CAD model to begin</p>
-                      <button
-                        onClick={loadSampleModel}
-                        className="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-lg font-semibold"
-                      >
-                        Load Sample Model
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Viewer Info */}
-              <div className="bg-[#0f3460] p-3 flex justify-between text-sm border-t border-[#0f3460]">
-                <span>Status: {viewerInitialized ? 'Ready' : 'Initializing...'}</span>
-                <span>{viewerInitialized ? 'Viewer initialized' : 'Loading Three.js...'}</span>
-              </div>
+              )}
             </div>
 
-            {/* Engineering Tools Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
-              {[
-                { icon: '⚙️', title: 'Parametric Editor', desc: 'Feature-based modeling with constraints', features: ['Constraint system', 'Formula-driven dimensions', 'Real-time updates'] },
-                { icon: '🤖', title: 'AI Design Assistant', desc: 'Natural language design commands', features: ['Voice commands', 'Generative design', 'Design optimization'] },
-                { icon: '🏭', title: 'Manufacturing Tools', desc: 'CAM toolpath and BOM generation', features: ['CAM toolpaths', 'BOM auto-generation', 'Quality control'] },
-                { icon: '♿', title: 'Accessibility Checker', desc: 'WCAG 2.1 AA compliance verification', features: ['ADA compliance', 'Universal design', 'Section 508'] }
-              ].map((tool, i) => (
-                <div key={i} className="bg-[#16213e] p-6 rounded-lg border border-[#0f3460] hover:border-blue-500 transition">
-                  <div className="flex items-center gap-3 mb-3">
-                    <span className="text-3xl">{tool.icon}</span>
-                    <h3 className="text-lg font-bold">{tool.title}</h3>
-                  </div>
-                  <p className="text-sm text-gray-400 mb-4">{tool.desc}</p>
-                  <ul className="text-sm space-y-2 mb-4">
-                    {tool.features.map((feature, j) => (
-                      <li key={j} className="flex items-center gap-2">
-                        <span className="text-blue-400">•</span> {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <button
-                    onClick={() => showNotification(`Opening ${tool.title}...`, 'info')}
-                    className="w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded font-semibold border border-gray-600"
-                  >
-                    Open Tool
-                  </button>
-                </div>
-              ))}
+            {/* Viewer Info */}
+            <div className="bg-neural-gray/50 p-3 flex justify-between text-sm border-t border-circuit-silver/20">
+              <span className="text-circuit-silver">
+                Status: {viewerInitialized ? 'Ready' : 'Initializing...'}
+              </span>
+              <span className="text-circuit-silver">
+                {viewerInitialized ? 'Three.js Loaded' : 'Loading renderer...'}
+              </span>
             </div>
-          </section>
+          </div>
+        </motion.div>
 
-          {/* 3D Plan Deliverables */}
-          <section className="mb-12 bg-[#16213e] p-8 rounded-lg">
-            <h2 className="text-3xl font-bold mb-6">3D Plan Deliverables</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { icon: '📚', title: '3D Product Catalogs', price: '$25K - $45K', timeline: '4-6 weeks', desc: 'Interactive web-based product viewers', features: ['360° product views', 'Interactive hotspots', 'AR preview capability', 'Mobile responsive'] },
-                { icon: '⚡', title: 'Parametric Design Systems', price: '$40K - $80K', timeline: '8-12 weeks', desc: 'Custom parametric CAD platform', features: ['Feature-based modeling', 'Constraint solver', 'Design automation', 'API integration', 'Team collaboration'], featured: true },
-                { icon: '🎨', title: 'Engineering Visualization', price: '$30K - $60K', timeline: '6-10 weeks', desc: 'Advanced rendering and simulation', features: ['Photorealistic rendering', 'Animation sequences', 'Assembly simulations', 'Technical illustrations'] },
-                { icon: '🏢', title: 'Enterprise CAD Platform', price: '$100K - $200K', timeline: '16-24 weeks', desc: 'Complete browser-based CAD solution', features: ['Full 3D modeling suite', 'Multi-user collaboration', 'Version control', 'Manufacturing integration', 'Custom plugins', 'Accessibility features'] }
-              ].map((deliverable, i) => (
-                <div key={i} className={`bg-[#1a1a2e] rounded-lg p-6 border-2 ${deliverable.featured ? 'border-blue-500' : 'border-[#0f3460]'} hover:border-blue-400 transition relative`}>
-                  {deliverable.featured && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white text-xs px-3 py-1 rounded-full">
-                      Most Popular
-                    </div>
-                  )}
-                  <div className="text-center mb-4">
-                    <div className="text-5xl mb-3">{deliverable.icon}</div>
-                    <h3 className="text-xl font-bold mb-2">{deliverable.title}</h3>
-                    <div className="text-2xl font-bold text-blue-400 mb-2">{deliverable.price}</div>
-                    <p className="text-gray-400 text-sm">{deliverable.desc}</p>
-                  </div>
-                  <ul className="text-sm space-y-2 mb-4 border-t border-b border-[#0f3460] py-4">
-                    {deliverable.features.map((feature, j) => (
-                      <li key={j} className="flex items-center gap-2">
-                        <span className="text-green-400">✓</span> {feature}
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex items-center justify-center gap-2 text-sm text-gray-400 mb-4 bg-[#0f3460] p-2 rounded">
-                    <span>⏱️</span>
-                    <span>{deliverable.timeline}</span>
-                  </div>
-                  <button
-                    onClick={() => showNotification(`Quote request for ${deliverable.title}`, 'success')}
-                    className="w-full bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg font-semibold"
-                  >
-                    Request Quote
-                  </button>
-                </div>
-              ))}
+        {/* Platform Status */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          className="relative bg-gradient-to-br from-brand-cyan to-brand-blue-electric rounded-2xl p-12 overflow-hidden"
+        >
+          <div className="absolute inset-0 opacity-10">
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `radial-gradient(circle, white 1px, transparent 1px)`,
+                backgroundSize: '30px 30px',
+              }}
+            />
+          </div>
+
+          <div className="relative">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-3 h-3 bg-success rounded-full animate-pulse shadow-glow-cyan" />
+              <h2 className="text-3xl font-bold text-white">Platform Status</h2>
             </div>
-          </section>
 
-          {/* Project Observatory */}
-          <section className="mb-12">
-            <h2 className="text-3xl font-bold mb-6">Project Observatory</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {/* Active Projects */}
-              <div className="bg-[#16213e] rounded-lg p-6 border border-[#0f3460]">
-                <h3 className="text-xl font-bold mb-4 pb-3 border-b border-[#0f3460]">Active Projects</h3>
-                {[
-                  { name: 'Healthcare RAG System', client: 'MedTech Corp', progress: 75, value: '$35K' },
-                  { name: 'ML Predictive Analytics', client: 'FinanceAI Inc', progress: 45, value: '$120K' },
-                  { name: '3D Product Catalog', client: 'RetailPro', progress: 90, value: '$35K' }
-                ].map((project, i) => (
-                  <div key={i} className="mb-4 bg-[#0f3460] p-4 rounded">
-                    <div className="flex justify-between mb-2">
-                      <div>
-                        <div className="font-semibold">{project.name}</div>
-                        <div className="text-sm text-gray-400">{project.client}</div>
-                      </div>
-                      <div className="text-green-400 font-bold">{project.value}</div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 bg-[#1a1a2e] h-2 rounded-full overflow-hidden">
-                        <div className="bg-blue-500 h-full transition-all" style={{ width: `${project.progress}%` }}></div>
-                      </div>
-                      <span className="text-sm text-blue-400 font-bold">{project.progress}%</span>
-                    </div>
-                  </div>
-                ))}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div>
+                <div className="text-5xl font-bold text-white mb-2">99.8%</div>
+                <div className="text-white/80 font-medium">System Uptime</div>
+                <p className="text-white/60 text-sm mt-1">Last 30 days</p>
               </div>
-
-              {/* Performance Metrics */}
-              <div className="bg-[#16213e] rounded-lg p-6 border border-[#0f3460]">
-                <h3 className="text-xl font-bold mb-4 pb-3 border-b border-[#0f3460]">Performance Metrics</h3>
-                {[
-                  { name: 'Model Accuracy', value: '96.5%' },
-                  { name: 'API Uptime', value: '99.9%' },
-                  { name: 'Response Time', value: '145ms' },
-                  { name: 'Client Satisfaction', value: '4.9/5.0' }
-                ].map((metric, i) => (
-                  <div key={i} className="flex justify-between items-center mb-3 bg-[#0f3460] p-3 rounded">
-                    <span className="text-sm">{metric.name}</span>
-                    <span className="bg-green-500/20 text-green-400 px-3 py-1 rounded-full text-sm font-bold">{metric.value}</span>
-                  </div>
-                ))}
+              <div>
+                <div className="text-5xl font-bold text-white mb-2">&lt;2s</div>
+                <div className="text-white/80 font-medium">Response Time</div>
+                <p className="text-white/60 text-sm mt-1">Average API latency</p>
               </div>
-
-              {/* Revenue Tracking */}
-              <div className="bg-[#16213e] rounded-lg p-6 border border-[#0f3460]">
-                <h3 className="text-xl font-bold mb-4 pb-3 border-b border-[#0f3460]">Revenue Tracking</h3>
-                {[
-                  { label: 'Q1 2025', amount: '$250K', progress: 85, color: 'bg-blue-500' },
-                  { label: 'Q2 Target', amount: '$400K', progress: 60, color: 'bg-yellow-500' },
-                  { label: 'Year 1 Goal', amount: '$1M', progress: 30, color: 'bg-green-500' }
-                ].map((item, i) => (
-                  <div key={i} className="mb-4">
-                    <div className="flex justify-between mb-2">
-                      <span className="font-semibold">{item.label}</span>
-                      <span className="text-blue-400 font-bold">{item.amount}</span>
-                    </div>
-                    <div className="bg-[#0f3460] h-8 rounded overflow-hidden">
-                      <div className={`${item.color} h-full flex items-center px-3 text-white text-sm font-bold transition-all`} style={{ width: `${item.progress}%` }}>
-                        {item.progress > 20 && `${item.progress}%`}
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              <div>
+                <div className="text-5xl font-bold text-white mb-2">94%</div>
+                <div className="text-white/80 font-medium">Model Accuracy</div>
+                <p className="text-white/60 text-sm mt-1">Across all deployments</p>
               </div>
             </div>
-          </section>
-
-          {/* CTA Section */}
-          <section className="text-center bg-gradient-to-r from-purple-600 to-indigo-700 p-12 rounded-lg">
-            <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Business?</h2>
-            <p className="text-xl mb-6 opacity-90">Let&apos;s discuss how our AI/ML and CAD engineering services can accelerate your growth</p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <a href="/contact" className="bg-white text-indigo-700 hover:bg-gray-100 px-8 py-3 rounded-lg font-bold transition">
-                Schedule Consultation
-              </a>
-              <a href="/portfolio" className="bg-transparent border-2 border-white hover:bg-white/10 px-8 py-3 rounded-lg font-bold transition">
-                View Case Studies
-              </a>
-            </div>
-          </section>
-        </div>
+          </div>
+        </motion.div>
       </div>
-    </>
+    </div>
   );
 }
