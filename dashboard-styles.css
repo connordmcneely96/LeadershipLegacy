@@ -1,0 +1,726 @@
+/* ========================================
+   Dashboard Specific Styles
+   ======================================== */
+
+/* Dashboard Overview Section */
+.dashboard-overview {
+    padding: var(--spacing-lg) 0;
+}
+
+.theme-dark .dashboard-overview {
+    background-color: var(--dark-bg);
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.stat-card {
+    padding: var(--spacing-md);
+    border-radius: 10px;
+    text-align: center;
+    transition: transform var(--transition-speed);
+}
+
+.theme-dark .stat-card {
+    background-color: var(--dark-card-bg);
+    border: 1px solid var(--dark-border);
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-xs);
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+/* Services Dashboard Section */
+.services-section {
+    padding: var(--spacing-xl) 0;
+}
+
+.theme-dark .services-section {
+    background-color: var(--dark-section-bg);
+}
+
+.services-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.dashboard-service-card {
+    padding: var(--spacing-md);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.theme-dark .dashboard-service-card {
+    background-color: var(--dark-card-bg);
+    border: 2px solid var(--dark-border);
+}
+
+.service-header-dash {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.service-icon-dash {
+    font-size: 2rem;
+}
+
+.service-header-dash h3 {
+    flex: 1;
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.service-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.service-status.active {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: var(--secondary-color);
+}
+
+.service-status.pending {
+    background-color: rgba(243, 156, 18, 0.2);
+    color: var(--warning-color);
+}
+
+.service-metrics {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+    border-radius: 5px;
+}
+
+.theme-dark .service-metrics {
+    background-color: var(--dark-bg);
+}
+
+.metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+.metric-value {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.service-features-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.feature-tag {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.875rem;
+}
+
+.theme-dark .feature-tag {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+}
+
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+/* CAD Workspace Section */
+.cad-workspace-section {
+    padding: var(--spacing-xl) 0;
+}
+
+.theme-dark .cad-workspace-section {
+    background-color: var(--dark-bg);
+}
+
+.section-header-with-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+}
+
+.workspace-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+/* CAD Viewer */
+.cad-viewer-container {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: var(--spacing-lg);
+}
+
+.theme-dark .cad-viewer-container {
+    background-color: var(--dark-card-bg);
+    border: 2px solid var(--dark-border);
+}
+
+.viewer-toolbar {
+    display: flex;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.theme-dark .viewer-toolbar {
+    background-color: var(--dark-section-bg);
+    border-bottom: 1px solid var(--dark-border);
+}
+
+.tool-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tool-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.25rem;
+    transition: all var(--transition-speed);
+}
+
+.theme-dark .tool-btn {
+    color: var(--dark-text);
+}
+
+.tool-btn:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.cad-3d-viewer {
+    width: 100%;
+    height: 500px;
+    position: relative;
+}
+
+.theme-dark .cad-3d-viewer {
+    background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+}
+
+.viewer-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    padding: var(--spacing-lg);
+}
+
+.placeholder-icon {
+    font-size: 5rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.5;
+}
+
+.viewer-placeholder h3 {
+    margin-bottom: var(--spacing-sm);
+}
+
+.viewer-placeholder p {
+    margin-bottom: var(--spacing-md);
+    opacity: 0.7;
+}
+
+.viewer-info {
+    display: flex;
+    justify-content: space-between;
+    padding: var(--spacing-sm);
+    font-size: 0.875rem;
+}
+
+.theme-dark .viewer-info {
+    background-color: var(--dark-section-bg);
+    border-top: 1px solid var(--dark-border);
+}
+
+/* Engineering Tools Grid */
+.engineering-tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.tool-card {
+    padding: var(--spacing-md);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.theme-dark .tool-card {
+    background-color: var(--dark-card-bg);
+    border: 1px solid var(--dark-border);
+}
+
+.tool-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.tool-icon {
+    font-size: 2rem;
+}
+
+.tool-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+}
+
+.tool-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tool-features li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.tool-features li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Deliverables Section */
+.deliverables-section {
+    padding: var(--spacing-xl) 0;
+}
+
+.theme-dark .deliverables-section {
+    background-color: var(--dark-section-bg);
+}
+
+.deliverables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.deliverable-card {
+    padding: var(--spacing-md);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    position: relative;
+}
+
+.theme-dark .deliverable-card {
+    background-color: var(--dark-card-bg);
+    border: 2px solid var(--dark-border);
+}
+
+.deliverable-card.featured {
+    border-color: var(--primary-color);
+}
+
+.featured-badge {
+    position: absolute;
+    top: -12px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.25rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.deliverable-icon {
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.deliverable-card h3 {
+    text-align: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.deliverable-price {
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing-sm);
+}
+
+.deliverable-card > p {
+    text-align: center;
+    opacity: 0.8;
+}
+
+.deliverable-includes {
+    list-style: none;
+    padding: var(--spacing-sm) 0;
+    margin: var(--spacing-sm) 0;
+}
+
+.theme-dark .deliverable-includes {
+    border-top: 1px solid var(--dark-border);
+    border-bottom: 1px solid var(--dark-border);
+}
+
+.deliverable-includes li {
+    padding: 0.5rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.deliverable-includes li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--secondary-color);
+    font-weight: bold;
+}
+
+.deliverable-timeline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: var(--spacing-sm);
+    border-radius: 5px;
+}
+
+.theme-dark .deliverable-timeline {
+    background-color: var(--dark-section-bg);
+}
+
+.timeline-icon {
+    font-size: 1.25rem;
+}
+
+/* Observatory Section */
+.observatory-section {
+    padding: var(--spacing-xl) 0;
+}
+
+.theme-dark .observatory-section {
+    background-color: var(--dark-bg);
+}
+
+.observatory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+}
+
+.observatory-card {
+    padding: var(--spacing-md);
+    border-radius: 10px;
+}
+
+.theme-dark .observatory-card {
+    background-color: var(--dark-card-bg);
+    border: 1px solid var(--dark-border);
+}
+
+.observatory-card h3 {
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+}
+
+.theme-dark .observatory-card h3 {
+    border-bottom: 1px solid var(--dark-border);
+}
+
+/* Project List */
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.project-item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border-radius: 5px;
+}
+
+.theme-dark .project-item {
+    background-color: var(--dark-section-bg);
+}
+
+.project-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.project-name {
+    font-weight: 600;
+}
+
+.project-client {
+    font-size: 0.875rem;
+    opacity: 0.7;
+}
+
+.project-progress {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    grid-column: 1 / -1;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.theme-dark .progress-bar {
+    background-color: var(--dark-bg);
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed);
+}
+
+.progress-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.project-value {
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+/* Metrics List */
+.metrics-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-sm);
+    border-radius: 5px;
+}
+
+.theme-dark .metric-row {
+    background-color: var(--dark-section-bg);
+}
+
+.metric-name {
+    font-weight: 500;
+}
+
+.metric-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.metric-badge.success {
+    background-color: rgba(46, 204, 113, 0.2);
+    color: var(--secondary-color);
+}
+
+/* Revenue Tracking */
+.revenue-chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.revenue-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.revenue-label {
+    min-width: 100px;
+    font-weight: 500;
+}
+
+.revenue-bar {
+    flex: 1;
+    height: 30px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.theme-dark .revenue-bar {
+    background-color: var(--dark-section-bg);
+}
+
+.revenue-fill {
+    height: 100%;
+    background-color: var(--primary-color);
+    transition: width var(--transition-speed);
+}
+
+.revenue-fill.projected {
+    background-color: var(--warning-color);
+}
+
+.revenue-fill.goal {
+    background-color: var(--secondary-color);
+}
+
+.revenue-amount {
+    min-width: 80px;
+    text-align: right;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* CTA Buttons */
+.cta-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: var(--spacing-md);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .services-dashboard-grid,
+    .deliverables-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .engineering-tools-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .section-header-with-controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .workspace-controls {
+        width: 100%;
+    }
+
+    .workspace-controls button {
+        flex: 1;
+    }
+
+    .cad-3d-viewer {
+        height: 350px;
+    }
+
+    .observatory-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .tool-group {
+        flex-wrap: wrap;
+    }
+
+    .viewer-toolbar {
+        justify-content: center;
+    }
+
+    .project-item {
+        grid-template-columns: 1fr;
+    }
+
+    .revenue-label {
+        min-width: auto;
+        font-size: 0.875rem;
+    }
+
+    .revenue-amount {
+        min-width: auto;
+    }
+}
+
+/* Animation for loading states */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.loading {
+    animation: pulse 2s infinite;
+}
