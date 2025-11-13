@@ -1,0 +1,14 @@
+# Code Owners for ll_connors_leadership_legacy_launch
+
+# Default owners for everything in the repo
+* @InnerAnimal
+
+# Copilot can be assigned to work on these files
+*.html @InnerAnimal
+*.css @InnerAnimal
+*.js @InnerAnimal
+*.md @InnerAnimal
+
+# Configuration files require human review
+vercel.json @InnerAnimal
+.github/* @InnerAnimal
