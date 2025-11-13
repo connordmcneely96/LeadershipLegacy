@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": null,
+  "installCommand": "echo 'No install needed'",
+  "outputDirectory": "apps/leadership-legacy",
   "cleanUrls": true,
   "trailingSlash": false
 }
