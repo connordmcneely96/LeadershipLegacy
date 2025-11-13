@@ -1,10 +1,7 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/Sidebar";
 import { QueryProvider } from "@/components/providers/QueryProvider";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Inner Animals AI Platform",
@@ -17,15 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
+    <html lang="en" className="dark">
+      <body className="font-body antialiased bg-neural-dark text-white">
         <QueryProvider>
-          <div className="flex h-screen bg-gray-50">
+          <div className="flex min-h-screen">
             <Sidebar />
             <main className="flex-1 overflow-y-auto">
-              <div className="container mx-auto p-8">
-                {children}
-              </div>
+              {children}
             </main>
           </div>
         </QueryProvider>
