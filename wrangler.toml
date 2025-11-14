@@ -6,13 +6,13 @@ main = "worker.js"
 compatibility_date = "2024-11-14"
 compatibility_flags = ["nodejs_compat"]
 
-# Account ID - Update this after authentication
-# Run: wrangler whoami
-# account_id = "YOUR_ACCOUNT_ID_HERE"
+# Account ID
+account_id = "ede6590ac0d2fb7daf155b35653457b2"
 
 # Worker configuration
 workers_dev = true
-route = { pattern = "api.leadershiplegacy.com/*", zone_name = "leadershiplegacy.com" }
+# Uncomment and configure custom route when domain is ready:
+# route = { pattern = "api.leadershiplegacy.com/*", zone_id = "0bab48636c1bea4be4ea61c0c7787c3e" }
 
 # D1 Database binding
 # Update database_id after creating: wrangler d1 create leadership-legacy-db
