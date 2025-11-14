@@ -1,0 +1,53 @@
+{
+  "project": {
+    "name": "leadership-legacy",
+    "production_branch": "main",
+    "build_config": {
+      "build_command": "npm run build",
+      "build_output_directory": "out",
+      "root_directory": "/",
+      "environment_variables": {
+        "CF_PAGES": "1",
+        "NODE_VERSION": "18",
+        "NPM_VERSION": "9"
+      }
+    },
+    "deployment_configs": {
+      "production": {
+        "environment_variables": {
+          "NEXT_PUBLIC_API_BASE": "https://leadership-legacy-worker.workers.dev",
+          "NEXT_PUBLIC_WORKER_URL": "https://leadership-legacy-worker.workers.dev",
+          "NODE_ENV": "production"
+        },
+        "compatibility_date": "2024-11-14",
+        "compatibility_flags": ["nodejs_compat"]
+      },
+      "preview": {
+        "environment_variables": {
+          "NEXT_PUBLIC_API_BASE": "https://leadership-legacy-worker.workers.dev",
+          "NEXT_PUBLIC_WORKER_URL": "https://leadership-legacy-worker.workers.dev",
+          "NODE_ENV": "development"
+        }
+      }
+    }
+  },
+  "bindings": {
+    "d1_databases": [
+      {
+        "binding": "LEADERSHIP_DB",
+        "database_name": "leadership-legacy-db"
+      }
+    ],
+    "r2_buckets": [
+      {
+        "binding": "LEADERSHIP_ASSETS",
+        "bucket_name": "leadership-legacy-assets"
+      }
+    ],
+    "kv_namespaces": [
+      {
+        "binding": "LEADERSHIP_CONFIG"
+      }
+    ]
+  }
+}
