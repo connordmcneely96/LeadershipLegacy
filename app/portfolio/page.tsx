@@ -14,6 +14,7 @@ import {
   GraduationCap,
   Settings
 } from 'lucide-react';
+import GitHubProjects from '../components/GitHubProjects';
 
 export default function Portfolio() {
   const projects = [
@@ -242,6 +243,9 @@ export default function Portfolio() {
             ))}
           </div>
         </div>
+
+        {/* GitHub Projects Section */}
+        <GitHubProjects />
 
         {/* Certifications */}
         <motion.div
